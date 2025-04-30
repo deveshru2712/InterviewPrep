@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Mona_Sans } from "next/font/google";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Perpwise",
@@ -19,7 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${monaSans.className} antialiased`}>{children}</body>
+      <body className={`${monaSans.className} antialiased pattern`}>
+        {children}
+        <Toaster />
+      </body>
     </html>
   );
 }
