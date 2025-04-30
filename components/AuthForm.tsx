@@ -10,8 +10,9 @@ import { Form } from "@/components/ui/form";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
-import FormField from "./FormField";
 import { useRouter } from "next/navigation";
+
+import FormField from "./FormField";
 
 const authFormSchema = (type: FormType) => {
   return z.object({
@@ -74,6 +75,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
                 control={form.control}
                 label="Name"
                 name="name"
+                type="text"
                 placeholder="Your name"
               />
             )}
@@ -82,6 +84,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
               control={form.control}
               label="Email"
               name="email"
+              type="email"
               placeholder="Your email address"
             />
 
@@ -89,6 +92,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
               control={form.control}
               label="Password"
               name="password"
+              type="password"
               placeholder="Enter your password"
             />
 
