@@ -3,11 +3,11 @@ import Link from "next/link";
 import React from "react";
 import InterviewCard from "@/components/InterviewCard";
 import { Button } from "@/components/ui/button";
+import { getCurrentUser } from "@/lib/actions/auth.action";
 import {
-  getCurrentUser,
   getInterviewByUserId,
   getLatestInterview,
-} from "@/lib/actions/auth.action";
+} from "@/lib/actions/general.action";
 
 const HomePage = async () => {
   const user = await getCurrentUser();
@@ -16,9 +16,6 @@ const HomePage = async () => {
     await getInterviewByUserId(user?.id),
     await getLatestInterview({ userId: user?.id }),
   ]);
-
-  console.log(await getInterviewByUserId(user?.name));
-  console.log(await getLatestInterview({ userId: user?.id }));
 
   const hasUpcomingInterview = latestInterview?.length > 0;
   const hasPastInterview = userInterview?.length > 0;
