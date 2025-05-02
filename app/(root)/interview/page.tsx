@@ -5,7 +5,6 @@ import React from "react";
 
 const Page = async () => {
   const user = await getCurrentUser();
-
   if (!user) {
     redirect("/sign-in");
   }

@@ -67,7 +67,7 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
 
   useEffect(() => {
     if (callStatus === CallStatus.FINISHED) router.push("/");
-  }, [messages, callStatus, type, userId]);
+  }, [messages, callStatus, type, userId, router]);
 
   const handleCall = async () => {
     setCallStatus(CallStatus.CONNECTING);
@@ -81,6 +81,7 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
       },
     });
   };
+
   const handleDisconnect = async () => {
     setCallStatus(CallStatus.FINISHED);
     vapi.stop();
