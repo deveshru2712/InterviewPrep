@@ -21,6 +21,7 @@ export async function signUp(params: SignUpParams) {
       success: true,
       message: "Account created successfully.Please sign in.",
     };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.log(`Error while creating an account`, error);
     if (error.code === "auth/email-already-exists") {
@@ -108,4 +109,57 @@ export async function getCurrentUser(): Promise<User | null> {
 export async function isAuthenticated() {
   const user = await getCurrentUser();
   return !!user;
+}
+
+export async function getInterviewByUserId(
+  userId: string
+): Promise<Interview[] | null> {
+  try {
+    if (!userId) {
+      console.log("please provide a userid");
+      return [];
+    }
+
+    const interviews = await db
+      .collection("interviews")
+      .where("userId", "==", "wKdsHIyJi4Te6HH3HszC3cQGrDI3")
+      .orderBy("createdAt", "desc")
+      .get();
+
+    return interviews.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Interview[];
+  } catch (error) {
+    console.error("Error in getInterviewByUserId:", error);
+    return [];
+  }
+}
+
+export async function getLatestInterview(
+  params: GetLatestInterviewsParams
+): Promise<Interview[] | null> {
+  const { userId, limit = 20 } = params;
+  try {
+    if (!userId) {
+      console.log("please provide a userid");
+      return [];
+    }
+
+    const interviews = await db
+      .collection("interviews")
+      .orderBy("createdAt", "desc")
+      .where("finalized", "==", true)
+      .where("userId", "!=", userId)
+      .limit(limit)
+      .get();
+
+    return interviews.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Interview[];
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
 }
