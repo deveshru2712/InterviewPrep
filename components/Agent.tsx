@@ -1,6 +1,7 @@
 "use client";
 
 import { interviewer } from "@/constants";
+import { createFeedBack } from "@/lib/actions/general.action";
 import { cn } from "@/lib/utils";
 import { vapi } from "@/lib/vapi.sdk";
 import Image from "next/image";
@@ -72,24 +73,25 @@ const Agent = ({
     };
   }, []);
 
-  const handleGenerateFeedback = async (messages: SavedMessage[]) => {
-    console.log("generate feedback");
+  useEffect(() => {
+    const handleGenerateFeedback = async (messages: SavedMessage[]) => {
+      console.log("generate feedback");
 
-    // this is going to be a sever action
-    const { success, id } = {
-      success: true,
-      id: "feedback-id",
+      // this is going to be a sever action
+      const { success, feedbackId: id } = await createFeedBack({
+        interviewId: interviewId!,
+        userId: userId!,
+        transcript: messages,
+      });
+
+      if (success && id) {
+        router.push(`/interview/${interviewId}/feedback`);
+      } else {
+        console.log("error while saving feedback");
+        router.push("/");
+      }
     };
 
-    if (success && id) {
-      router.push(`/interview/${interviewId}/feedback`);
-    } else {
-      console.log("error while saving feedback");
-      router.push("/");
-    }
-  };
-
-  useEffect(() => {
     if (callStatus === CallStatus.FINISHED) {
       if (type === "generate") {
         router.push("/");
@@ -97,13 +99,11 @@ const Agent = ({
         handleGenerateFeedback(messages);
       }
     }
-    if (callStatus === CallStatus.FINISHED) router.push("/");
-  }, [messages, callStatus, type, userId, router]);
+  }, [messages, interviewId, callStatus, type, userId, router]);
 
   const handleCall = async () => {
+    setCallStatus(CallStatus.CONNECTING);
     if (type == "generate") {
-      setCallStatus(CallStatus.CONNECTING);
-
       await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID, {
         variableValues: {
           username: userName,
