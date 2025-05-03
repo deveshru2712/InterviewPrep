@@ -19,8 +19,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${monaSans.className} antialiased pattern`}>
+    <html lang="en" className="dark" suppressHydrationWarning={true}>
+      <body
+        className={`${monaSans.className} antialiased pattern`}
+        suppressHydrationWarning={true}
+      >
         {children}
         <Toaster />
       </body>
