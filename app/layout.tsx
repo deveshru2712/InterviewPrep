@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 const monaSans = Mona_Sans({
   variable: "--font-mona-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export default function RootLayout({
@@ -20,13 +21,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning={true}>
-      <body
-        className={`${monaSans.className} antialiased pattern`}
-        suppressHydrationWarning={true}
-      >
+      <body className={`${monaSans.className} antialiased pattern`} suppressHydrationWarning={true}>
         {children}
         <Toaster />
       </body>
     </html>
   );
 }
+
